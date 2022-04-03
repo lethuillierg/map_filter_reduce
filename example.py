@@ -7,6 +7,9 @@ import requests
 import re
 import string
 
+# not mandatory: just helps with type hinting (`typing.List[str]`)
+import typing
+
 # Note: while _map_ and _filter_ do not need to be imported,
 #       _reduce_ has to be imported from _functools_
 from functools import reduce
@@ -15,8 +18,11 @@ from functools import reduce
 url = 'https://www.gutenberg.org/cache/epub/16452/pg16452.txt'
 iliad = requests.get(url).text
 
+# Note: type hinting is being used here when implementing the function
+# Example: `def get_sentences(iliad: str) -> typing.List[str]:`
+#               type of the argument _^      ^_ type of the returned object
 
-def get_sentences(iliad: str) -> list:
+def get_sentences(iliad: str) -> typing.List[str]:
     """
     Preprocessing:
     - clean the text
@@ -34,7 +40,7 @@ def get_sentences(iliad: str) -> list:
     return iliad.split('.')
 
 
-def get_olympian_sentences(sentences: list) -> list:
+def get_olympian_sentences(sentences: typing.List[str]) -> typing.List[str]:
     """
     ------
     FILTER
@@ -44,13 +50,13 @@ def get_olympian_sentences(sentences: list) -> list:
           match `Olympus`, `Olympian`, etc.
     Note: each sentence is lowered in order to make the match case insensitive
            but because this is just a filter, it does not transform the sentences
-           into lower case characters. In other words, `t.lower()` does only
-           occur in the lambda and has no effect on the filtered sentences.
+           into lower case. In other words, `t.lower()` does only occur in the
+           lambda and has no effect on the filtered sentences.
     """
     return list(filter(lambda s: 'olymp' in s.lower(), sentences))
 
 
-def modernize_sentences(sentences: list) -> list:
+def modernize_sentences(sentences: typing.List[str]) -> typing.List[str]:
     """
     ---
     MAP
@@ -61,7 +67,7 @@ def modernize_sentences(sentences: list) -> list:
     return list(map(lambda s: s.replace('’d', 'ed').strip(), sentences))
 
 
-def merge_sentences(sentences: list) -> str:
+def merge_sentences(sentences: typing.List[str]) -> str:
     """
     ------
     REDUCE
