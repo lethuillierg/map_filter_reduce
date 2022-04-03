@@ -3,16 +3,16 @@ Input: Iliad from Homer
 Output: one text consisting of iliadic sentences containing a reference to the Olympus
 """
 
-import requests
+# Note: while _map_ and _filter_ do not need to be imported,
+#       _reduce_ has to be imported from _functools_
+from functools import reduce
+
 import re
+import requests
 import string
 
 # not mandatory: just helps with type hinting (`typing.List[str]`)
 import typing
-
-# Note: while _map_ and _filter_ do not need to be imported,
-#       _reduce_ has to be imported from _functools_
-from functools import reduce
 
 # Download The Iliad from Homer (from gutenberg.org)
 url = 'https://www.gutenberg.org/cache/epub/16452/pg16452.txt'
@@ -31,7 +31,9 @@ def get_sentences(iliad: str) -> typing.List[str]:
     """
 
     # 1. using a regex, replace the newlines with a space
+    # `\r\n` => new line
     iliad = re.sub('\r\n', ' ', iliad)
+    # `\\[` => `[` | `\d+` => one digit or more
     # 2. using a regex, remove `[<number>]` (e.g., `abc[12]` -> `abc`)
     iliad = re.sub('\\[\d+\\]', '', iliad)
     # 3. remove all digits using the maketrans+translate idiom
@@ -53,7 +55,7 @@ def get_olympian_sentences(sentences: typing.List[str]) -> typing.List[str]:
            into lower case. In other words, `t.lower()` does only occur in the
            lambda and has no effect on the filtered sentences.
     """
-    return list(filter(lambda s: 'olymp' in s.lower(), sentences))
+    return filter(lambda s: 'olymp' in s.lower(), sentences)
 
 
 def modernize_sentences(sentences: typing.List[str]) -> typing.List[str]:
@@ -64,7 +66,7 @@ def modernize_sentences(sentences: typing.List[str]) -> typing.List[str]:
     Replace `’d` with `ed` and strip (that is: remove empty space
     at the beginning and end of the sentence)
     """
-    return list(map(lambda s: s.replace('’d', 'ed').strip(), sentences))
+    return map(lambda s: s.replace('’d', 'ed').strip(), sentences)
 
 
 def merge_sentences(sentences: typing.List[str]) -> str:
@@ -80,7 +82,7 @@ def merge_sentences(sentences: typing.List[str]) -> str:
         ° if it is not `.`, a `.` is inserted between the sentences (`a + '. ' + b`)
     - a ternary operator is used for the condition: `<output A> if <condition> else <output B>`
     """
-    return reduce(lambda a, b: a + b if a[-1] == '.' else a + '. ' + b, sentences)
+    return reduce(lambda a, b: (a + b) if a[-1] == '.' else (a + '. ' + b), sentences)
 
 
 # For debugging purposes, I suggest you to print the intermediary variables
