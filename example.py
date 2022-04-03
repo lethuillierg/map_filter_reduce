@@ -42,7 +42,7 @@ def get_sentences(iliad: str) -> typing.List[str]:
     return iliad.split('.')
 
 
-def get_olympian_sentences(sentences: typing.List[str]) -> typing.List[str]:
+def get_olympian_sentences(sentences: typing.List[str]) -> filter:
     """
     ------
     FILTER
@@ -58,7 +58,7 @@ def get_olympian_sentences(sentences: typing.List[str]) -> typing.List[str]:
     return filter(lambda s: 'olymp' in s.lower(), sentences)
 
 
-def modernize_sentences(sentences: typing.List[str]) -> typing.List[str]:
+def modernize_sentences(sentences: filter) -> map:
     """
     ---
     MAP
@@ -69,7 +69,7 @@ def modernize_sentences(sentences: typing.List[str]) -> typing.List[str]:
     return map(lambda s: s.replace('’d', 'ed').strip(), sentences)
 
 
-def merge_sentences(sentences: typing.List[str]) -> str:
+def merge_sentences(sentences: map) -> str:
     """
     ------
     REDUCE
