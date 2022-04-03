@@ -22,6 +22,7 @@ iliad = requests.get(url).text
 # Example: `def get_sentences(iliad: str) -> typing.List[str]:`
 #               type of the argument _^      ^_ type of the returned object
 
+
 def get_sentences(iliad: str) -> typing.List[str]:
     """
     Preprocessing:
@@ -33,9 +34,8 @@ def get_sentences(iliad: str) -> typing.List[str]:
     iliad = re.sub('\r\n', ' ', iliad)
     # 2. using a regex, remove `[<number>]` (e.g., `abc[12]` -> `abc`)
     iliad = re.sub('\\[\d+\\]', '', iliad)
-    # 3. remove all digits using maketrans+translate idiom
-    remove_digits = str.maketrans('', '', string.digits)
-    iliad = iliad.translate(remove_digits)
+    # 3. remove all digits using the maketrans+translate idiom
+    iliad = iliad.translate(str.maketrans('', '', string.digits))
     # 4. split on `.` to create a list of sentences
     return iliad.split('.')
 
